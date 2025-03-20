@@ -1,0 +1,50 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+
+    <!-- Expense Name -->
+    <TextView
+        android:id="@+id/textExpenseName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Expense Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Expense Amount -->
+    <TextView
+        android:id="@+id/textExpenseAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Amount"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textExpenseName"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Expense Date -->
+    <TextView
+        android:id="@+id/itemDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textExpenseAmount"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Delete Button -->
+    <Button
+        android:id="@+id/buttonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
