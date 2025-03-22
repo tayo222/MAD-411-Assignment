@@ -1,5 +1,7 @@
 package com.example.assignment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -38,12 +40,27 @@ class MainActivity : AppCompatActivity() {
         if (recyclerView == null) println("recyclerView is null!")
 
         // Initialize RecyclerView and adapter
-        expenseAdapter = ExpenseAdapter(expenseList)
+        expenseAdapter = ExpenseAdapter(expenseList) { position ->
+            // Handle item click
+            val expense = expenseList[position]
+            val intent = Intent(this, ExpenseDetailsActivity::class.java)
+            intent.putExtra("EXPENSE_NAME", expense.name)
+            intent.putExtra("EXPENSE_AMOUNT", expense.amount)
+            intent.putExtra("EXPENSE_DATE", expense.date)
+            startActivity(intent)
+        }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = expenseAdapter
 
         // Set click listener for the "Add Expense" button
         addExpenseButton.setOnClickListener { addExpense() }
+
+        // Set click listener for the "Financial Tips" button
+        val financialTipsButton = findViewById<Button>(R.id.buttonFinancialTips)
+        financialTipsButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/financial-tips"))
+            startActivity(intent)
+        }
     }
 
     private fun addExpense() {
@@ -79,6 +96,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Please enter a name, amount, and date!", Toast.LENGTH_SHORT).show()
         }
     }
+
     override fun onStart() {
         super.onStart()
         Log.d("MainActivity", "onStart called")

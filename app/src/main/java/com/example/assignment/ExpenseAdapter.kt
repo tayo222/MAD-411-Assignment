@@ -8,8 +8,10 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ExpenseAdapter(private val expenseList: MutableList<Expense>) :
-    RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
+class ExpenseAdapter(
+    private val expenseList: MutableList<Expense>,
+    private val onItemClickListener: (Int) -> Unit // Add this parameter
+) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
     class ExpenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val expenseNameTextView: TextView = itemView.findViewById(R.id.textExpenseName)
@@ -32,8 +34,12 @@ class ExpenseAdapter(private val expenseList: MutableList<Expense>) :
             holder.deleteButton.setOnClickListener {
                 removeExpense(position)
             }
+
+            // Set click listener for the entire item view
+            holder.itemView.setOnClickListener {
+                onItemClickListener(position) // Trigger the click listener
+            }
         } catch (e: Exception) {
-            // Log any exceptions
             Log.e("ExpenseAdapter", "Error in onBindViewHolder: ${e.message}")
         }
     }
@@ -45,7 +51,6 @@ class ExpenseAdapter(private val expenseList: MutableList<Expense>) :
             expenseList.removeAt(position)
             notifyItemRemoved(position)
         } catch (e: Exception) {
-            // Log any exceptions
             Log.e("ExpenseAdapter", "Error in removeExpense: ${e.message}")
         }
     }
