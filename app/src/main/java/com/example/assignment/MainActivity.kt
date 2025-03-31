@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.headerContainer, HeaderFragment())
+            .commit()
+
         // Initialize views
         expenseNameEditText = findViewById(R.id.textExpenseName)
         expenseAmountEditText = findViewById(R.id.textExpenseAmount)
@@ -55,24 +59,22 @@ class MainActivity : AppCompatActivity() {
         // Set click listener for the "Add Expense" button
         addExpenseButton.setOnClickListener { addExpense() }
 
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.footerContainer, FooterFragment())
+            .commit()
         // Set click listener for the "Financial Tips" button
         val financialTipsButton = findViewById<Button>(R.id.buttonFinancialTips)
         financialTipsButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/financial-tips"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.nerdwallet.com/h/category/personal-finance"))
             startActivity(intent)
         }
     }
-
     private fun addExpense() {
-        // Log to check if the method is being called
-        println("Add Expense button clicked!")
-
-        // Get input values
         val name = expenseNameEditText.text.toString().trim()
         val amountStr = expenseAmountEditText.text.toString().trim()
         val date = expenseDateEditText.text.toString().trim()
 
-        // Validate input
         if (name.isNotEmpty() && amountStr.isNotEmpty() && date.isNotEmpty()) {
             val amount = amountStr.toDoubleOrNull()
             if (amount != null) {
@@ -85,18 +87,21 @@ class MainActivity : AppCompatActivity() {
                 expenseAmountEditText.text.clear()
                 expenseDateEditText.text.clear()
 
-                // Log success
-                println("Expense added successfully!")
+                // Update total expenses in FooterFragment
+                updateTotalExpenses()
             } else {
-                // Show error for invalid amount
                 Toast.makeText(this, "Invalid amount!", Toast.LENGTH_SHORT).show()
             }
         } else {
-            // Show error for missing fields
             Toast.makeText(this, "Please enter a name, amount, and date!", Toast.LENGTH_SHORT).show()
         }
     }
 
+    private fun updateTotalExpenses() {
+        val totalExpense = expenseList.sumOf { it.amount }
+        val footerFragment = supportFragmentManager.findFragmentById(R.id.footerContainer) as FooterFragment
+        footerFragment.updateTotalExpense(totalExpense)
+    }
     override fun onStart() {
         super.onStart()
         Log.d("MainActivity", "onStart called")
