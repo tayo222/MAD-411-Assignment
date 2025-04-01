@@ -33,33 +33,14 @@ class ExpenseAdapter(
         holder.expenseAmountTextView.text = currentExpense.amount.toString()
         holder.expenseDateTextView.text = currentExpense.date.toString()
 
-        // Set click listener for "Show Details" button
         holder.showDetailsButton.setOnClickListener {
-            Log.d("ExpenseAdapter", "Show Details button clicked for expense: ${currentExpense.name}")
-
-            val intent = Intent(holder.itemView.context, ExpenseDetailsActivity::class.java)
-            intent.putExtra("EXPENSE_NAME", currentExpense.name)
-            intent.putExtra("EXPENSE_AMOUNT", currentExpense.amount)
-            intent.putExtra("EXPENSE_DATE", currentExpense.date)
-
-            Log.d("ExpenseAdapter", "Intent created: ${intent.toString()}")
-
-            holder.itemView.context.startActivity(intent)
+            onItemClickListener(position)
         }
 
-        // Set click listener for "Delete" button
         holder.deleteButton.setOnClickListener {
-            removeExpense(position)
+            onDeleteClickListener(position) // Delegate to fragment
         }
     }
     override fun getItemCount(): Int = expenseList.size
 
-    private fun removeExpense(position: Int) {
-        try {
-            expenseList.removeAt(position)
-            notifyItemRemoved(position)
-        } catch (e: Exception) {
-            Log.e("ExpenseAdapter", "Error in removeExpense: ${e.message}")
-        }
-    }
 }
